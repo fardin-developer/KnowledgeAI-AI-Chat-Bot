@@ -1,0 +1,80 @@
+.parent {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 100vh;
+	background: linear-gradient(135deg, #e0f7fa 0%, #fff3e0 100%);
+	padding: 2rem;
+}
+
+.auth_container {
+	width: 100%;
+	max-width: 450px;
+	background: #ffffff;
+	padding: 3rem 2.5rem;
+	border-radius: 24px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+	text-align: center;
+}
+
+.auth_container h2 {
+	font-size: 2rem;
+	font-weight: 800;
+	color: #004d40;
+	margin-bottom: 0.5rem;
+}
+
+.auth_container p {
+	font-style: italic;
+	font-size: 1rem;
+	color: #555;
+	margin-top: 1.5rem;
+}
+
+.auth_container p a {
+	color: #00796b;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth_container p a:hover {
+	color: #ff9800;
+    text-decoration: underline;
+}
+
+.form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
+.auth_label {
+	margin-bottom: 1.5rem;
+	width: 100%;
+}
+
+.button{
+    box-sizing: border-box;
+    border-radius: 30px;
+    height: 3rem;
+    border: none;
+	width: 100%;
+	background: linear-gradient(90deg, #009688 0%, #ff9800 100%);
+    color: #fff;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.button:hover {
+	background: linear-gradient(90deg, #00796b 0%, #fb8c00 100%);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
