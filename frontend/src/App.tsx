@@ -41,9 +41,9 @@ function App() {
 				<Route path='/' element={<Home />} />
 				<Route path='/chat' element={<Chat />} />
 				<Route path='/upload' element={<UploadKnowledge />} />
-				<Route path='/login' element={<Navigate to="/chat" replace />} />
-				<Route path='/signup' element={<Navigate to="/chat" replace />} />
-				<Route path='*' element={<Navigate to="/chat" replace />} />
+				<Route path='/login' element ={<Login/>} />
+				<Route path='/signup' element={<Signup />} />
+				<Route path='*' element={<Navigate to="/" replace />} />
 			</Routes>
 		);
 	} else {

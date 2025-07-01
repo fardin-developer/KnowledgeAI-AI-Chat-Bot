@@ -10,7 +10,7 @@ import styles from "./AuthForm.module.css";
 
 import axios from "axios";
 axios.defaults.baseURL = "https://ai.chatlinker.cloud";
-axios.defaults.withCredentials = true; // Enable sending credentials (e.g., cookies) in cross-origin requests
+axios.defaults.withCredentials = true; 
 
 import { useAuth } from "../context/context";
 
@@ -21,18 +21,9 @@ const Login = () => {
     const auth = useAuth();
 
     useEffect(() => {
-        // Debug logging
-        console.log("Login component - Auth state:", {
-            isLoggedIn: auth?.isLoggedIn,
-            user: auth?.user,
-            isLoading: auth?.isLoading,
-            auth: auth
-        });
         
-        // Only redirect if auth is not loading and user is logged in
         if (!auth?.isLoading && auth?.isLoggedIn && auth?.user) {
-            console.log("Redirecting to chat...");
-            navigate('/chat');
+            navigate('/');
         }
     }, [auth?.isLoading, auth?.isLoggedIn, auth?.user, navigate]);
 
@@ -49,7 +40,7 @@ const Login = () => {
             await auth?.login(email, password);
             setButtonName('Login');
             toast.success("Signed in successfully", { id: "login" });
-            navigate('/chat');
+            navigate('/');
         } catch (error: any) {
             setButtonName('Login');
             toast.error(error.message, { id: "login" });

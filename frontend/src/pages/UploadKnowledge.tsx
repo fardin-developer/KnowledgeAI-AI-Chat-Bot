@@ -508,9 +508,6 @@ const UploadKnowledge = () => {
           <div className="format-list">
             <span className="format-tag">PDF</span>
             <span className="format-tag">DOC/DOCX</span>
-            <span className="format-tag">TXT</span>
-            <span className="format-tag">CSV</span>
-            <span className="format-tag">XLSX/XLS</span>
           </div>
         </div>
 
