@@ -14,7 +14,7 @@ function App() {
 	const auth = useAuth();
 	
 	useEffect(() => {
-		axios.defaults.baseURL = "http://localhost:5001/api";
+		axios.defaults.baseURL = "https://pw.chatlinker.cloud/api";
 		axios.defaults.withCredentials = true;
 	}, []);
 
