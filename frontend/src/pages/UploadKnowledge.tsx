@@ -1,7 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as pdfjsLib from 'pdfjs-dist';
 import * as mammoth from "mammoth";
+import { extractInformationFromText } from '../../helpers/api-functions';
+import { useAuth } from '../context/context';
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
 const UploadKnowledge = () => {
@@ -12,6 +14,14 @@ const UploadKnowledge = () => {
   const [processingFiles, setProcessingFiles] = useState<{[key: string]: boolean}>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const auth = useAuth();
+
+  // Check if user is authenticated
+  useEffect(() => {
+    if (!auth?.isLoading && !auth?.isLoggedIn) {
+      navigate('/login');
+    }
+  }, [auth, navigate]);
 
   const extractTextFromPDF = async (file: File): Promise<string> => {
     try {
@@ -52,7 +62,7 @@ const UploadKnowledge = () => {
     const selectedFiles = Array.from(event.target.files || []);
     setFiles(prev => [...prev, ...selectedFiles]);
     
-    // Extract text from PDF files
+    // Extract text from files and send to backend
     for (const file of selectedFiles) {
       if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
         console.log(`Processing PDF: ${file.name}`);
@@ -63,6 +73,19 @@ const UploadKnowledge = () => {
           ...prev,
           [file.name]: extractedText
         }));
+        
+        // Send extracted text to backend for AI processing (only if authenticated)
+        if (auth?.isLoggedIn) {
+          try {
+            await extractInformationFromText(extractedText, file.name, 'pdf');
+            console.log(`Sent ${file.name} to backend for AI processing`);
+          } catch (error) {
+            console.error(`Error sending ${file.name} to backend:`, error);
+          }
+        } else {
+          console.log(`User not authenticated, skipping backend processing for ${file.name}`);
+        }
+        
         setProcessingFiles(prev => ({ ...prev, [file.name]: false }));
         console.log(`Extracted text from ${file.name}:`, extractedText);
       } else if (
@@ -75,6 +98,19 @@ const UploadKnowledge = () => {
           ...prev,
           [file.name]: extractedText
         }));
+        
+        // Send extracted text to backend for AI processing (only if authenticated)
+        if (auth?.isLoggedIn) {
+          try {
+            await extractInformationFromText(extractedText, file.name, 'docx');
+            console.log(`Sent ${file.name} to backend for AI processing`);
+          } catch (error) {
+            console.error(`Error sending ${file.name} to backend:`, error);
+          }
+        } else {
+          console.log(`User not authenticated, skipping backend processing for ${file.name}`);
+        }
+        
         setProcessingFiles(prev => ({ ...prev, [file.name]: false }));
         console.log(`Extracted text from ${file.name}:`, extractedText);
       }
@@ -158,6 +194,24 @@ const UploadKnowledge = () => {
         return '📁';
     }
   };
+
+  // Show loading while checking authentication
+  if (auth?.isLoading) {
+    return (
+      <div className="upload-page">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <h2>Loading...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if not authenticated
+  if (!auth?.isLoggedIn) {
+    return null; // Will redirect via useEffect
+  }
 
   return (
     <div className="upload-page">
@@ -477,7 +531,7 @@ const UploadKnowledge = () => {
             const droppedFiles = Array.from(e.dataTransfer.files);
             setFiles(prev => [...prev, ...droppedFiles]);
             
-            // Extract text from PDF files
+            // Extract text from dropped files and send to backend
             for (const file of droppedFiles) {
               if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
                 console.log(`Processing dropped PDF: ${file.name}`);
@@ -488,6 +542,19 @@ const UploadKnowledge = () => {
                   ...prev,
                   [file.name]: extractedText
                 }));
+                
+                // Send extracted text to backend for AI processing (only if authenticated)
+                if (auth?.isLoggedIn) {
+                  try {
+                    await extractInformationFromText(extractedText, file.name, 'pdf');
+                    console.log(`Sent dropped ${file.name} to backend for AI processing`);
+                  } catch (error) {
+                    console.error(`Error sending dropped ${file.name} to backend:`, error);
+                  }
+                } else {
+                  console.log(`User not authenticated, skipping backend processing for dropped ${file.name}`);
+                }
+                
                 setProcessingFiles(prev => ({ ...prev, [file.name]: false }));
                 console.log(`Extracted text from dropped ${file.name}:`, extractedText);
               } else if (
@@ -500,6 +567,19 @@ const UploadKnowledge = () => {
                   ...prev,
                   [file.name]: extractedText
                 }));
+                
+                // Send extracted text to backend for AI processing (only if authenticated)
+                if (auth?.isLoggedIn) {
+                  try {
+                    await extractInformationFromText(extractedText, file.name, 'docx');
+                    console.log(`Sent dropped ${file.name} to backend for AI processing`);
+                  } catch (error) {
+                    console.error(`Error sending dropped ${file.name} to backend:`, error);
+                  }
+                } else {
+                  console.log(`User not authenticated, skipping backend processing for dropped ${file.name}`);
+                }
+                
                 setProcessingFiles(prev => ({ ...prev, [file.name]: false }));
                 console.log(`Extracted text from dropped ${file.name}:`, extractedText);
               }

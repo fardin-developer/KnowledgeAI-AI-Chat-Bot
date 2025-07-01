@@ -102,3 +102,21 @@ export const logoutUser = async () => {
 		throw new Error(err.message);
 	}
 };
+
+export const extractInformationFromText = async (text: string, fileName: string, fileType: string) => {
+	try {
+		const response = await axios.post("/extraction/extract", {
+			text,
+			fileName,
+			fileType,
+		});
+		if (response.status !== 200) {
+			throw new Error();
+		}
+		const data = await response.data;
+		return data;
+	} catch (err: any) {
+		console.log(err);
+		throw new Error(err.message);
+	}
+};

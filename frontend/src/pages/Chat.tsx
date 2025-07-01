@@ -101,7 +101,7 @@ const Chat = () => {
 		return (
 			<div className={styles.chat_container}>
 				<div className={styles.chat_header}>
-					<h2>Chat with GPT 3.5 Turbo</h2>
+					<h2>CChat with built-in company knowledge</h2>
 				</div>
 				<div className={styles.chat_messages}>
 					<div className={styles.loading_dots}>
@@ -117,7 +117,7 @@ const Chat = () => {
 	return (
 		<div className={styles.chat_container}>
 			<div className={styles.chat_header}>
-				<h2>Chat with GPT 3.5 Turbo</h2>
+				<h2>Chat with built-in company knowledge</h2>
 			</div>
 
 			<div className={styles.chat_messages}>

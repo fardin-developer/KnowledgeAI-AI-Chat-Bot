@@ -6,8 +6,10 @@ import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user-routes.js";
 import chatRoutes from "./routes/chat-routes.js";
+import extractionRoutes from "./routes/extraction-routes.js";
 
 import { config } from "dotenv";
+import ExtractedInfo from "./models/extracted-info-model.js";
 
 config();
 
@@ -23,6 +25,7 @@ app.use(morgan("dev")); // for development
 // routes
 app.use("/api/user/", userRoutes);
 app.use("/api/chat/", chatRoutes);
+app.use("/api/extraction/", extractionRoutes);
 console.log(process.env.MONGO_USER);
 
 
