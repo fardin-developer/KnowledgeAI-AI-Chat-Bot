@@ -156,9 +156,6 @@ const Chat = () => {
 				>
 					← Back to Home
 				</motion.button>
-				<h2 className={styles.chat_title}>
-					💬 Chat with built-in company knowledge
-				</h2>
 			</div>
 
 			<div className={styles.chat_messages}>

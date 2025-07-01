@@ -6,23 +6,35 @@
 	min-height: 100vh;
 	background: linear-gradient(135deg, #e0f7fa 0%, #fff3e0 100%);
 	padding: 2rem;
+	gap: 3rem;
+}
+
+.image {
+	max-width: 350px;
+	width: 100%;
+	height: auto;
+	border-radius: 24px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+	margin-bottom: 1.5rem;
 }
 
 .auth_container {
 	width: 100%;
 	max-width: 450px;
-	background: #ffffff;
+	background: #ffffffcc;
 	padding: 3rem 2.5rem;
 	border-radius: 24px;
-	box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+	box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 	text-align: center;
+	backdrop-filter: blur(2px);
 }
 
 .auth_container h2 {
-	font-size: 2rem;
+	font-size: 2.2rem;
 	font-weight: 800;
 	color: #004d40;
 	margin-bottom: 0.5rem;
+	letter-spacing: 1px;
 }
 
 .auth_container p {
@@ -77,4 +89,44 @@
 .button:hover {
 	background: linear-gradient(90deg, #00796b 0%, #fb8c00 100%);
     box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+
+@media (max-width: 900px) {
+	.parent {
+		flex-direction: column;
+		gap: 1.5rem;
+		padding: 1.5rem 0.5rem;
+	}
+	.image {
+		max-width: 250px;
+	}
+	.auth_container {
+		padding: 2rem 1rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.parent {
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1rem 0.2rem;
+	}
+	.image {
+		max-width: 180px;
+		margin-bottom: 1rem;
+	}
+	.auth_container {
+		padding: 1.2rem 0.5rem;
+		border-radius: 16px;
+	}
+	.auth_container h2 {
+		font-size: 1.3rem;
+	}
+	.form {
+		margin-top: 1rem;
+	}
+	.button {
+		height: 2.5rem;
+		font-size: 1rem;
+	}
 }

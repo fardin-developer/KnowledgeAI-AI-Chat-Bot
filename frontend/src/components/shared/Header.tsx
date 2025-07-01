@@ -4,6 +4,7 @@ import "./Header.css";
 
 const Header = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 	const auth = useAuth();
 
 	useEffect(() => {
@@ -27,6 +28,10 @@ const Header = () => {
 		}
 	};
 
+	const toggleMenu = () => {
+		setMenuOpen((prev) => !prev);
+	};
+
 	return (
 		<header className="header">
 			<div className="container">
@@ -35,7 +40,12 @@ const Header = () => {
 						<div className="logo-icon">🧠</div>
 						<span>KnowledgeAI</span>
 					</div>
-					<ul className="nav-links">
+					<div className="hamburger" onClick={toggleMenu} aria-label="Toggle menu" tabIndex={0} role="button">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<ul className={`nav-links${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)}>
 						{/* we can add links here in future */}
 					</ul>
 					{auth?.isLoggedIn ? (
