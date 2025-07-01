@@ -113,7 +113,7 @@ const HomePage = () => {
       </section>
 
              {/* Floating Chat Icon */}
-       <button className="chat-icon" onClick={handleUploadRedirect} title="Upload Your Knowledge">
+       <button className="chat-icon" onClick={() => navigate('/chat')} title="Chat">
          📁
        </button>
     </div>

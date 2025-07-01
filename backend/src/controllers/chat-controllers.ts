@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/user-model.js";
 import { configureOpenAI } from "../configs/open-ai-config.js";
 import { ChatCompletionRequestMessage, OpenAIApi } from "openai";
+import ExtractedInfo from "../models/extracted-info-model.js";
 
 export const generateChatCompletion = async (
 	req: Request,
@@ -16,12 +17,28 @@ export const generateChatCompletion = async (
 			return res.status(401).json("User not registered / token malfunctioned");
 		}
 
-		// grab chats of users
+		// Fetch the latest extractedInfo for this user
+		const latestExtractedInfo = await ExtractedInfo.findOne({ user: user._id })
+			.sort({ createdAt: -1 });
 
+
+		console.log("latestExtractedInfo: " +  latestExtractedInfo);
+		
+
+		// grab chats of users
 		const chats = user.chats.map(({ role, content }) => ({
 			role,
 			content,
 		})) as ChatCompletionRequestMessage[];
+
+		// Prepend the latest extracted info as a system message if available
+		if (latestExtractedInfo && latestExtractedInfo.extractedInfo && latestExtractedInfo.extractedInfo !== "Processing...") {
+			chats.unshift({
+				role: "system",
+				content: `Knowledge Base for this user: ${latestExtractedInfo.extractedInfo}`,
+			});
+		}
+
 		chats.push({ content: message, role: "user" });
 
 		// save chats inside real user object

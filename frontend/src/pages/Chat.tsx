@@ -20,6 +20,7 @@ const Chat = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingChats, setIsLoadingChats] = useState(true);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -28,6 +29,13 @@ const Chat = () => {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
+
+	// Always focus the textarea when chat is open or messages change
+	useEffect(() => {
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+		}
+	}, [messages, isLoadingChats]);
 
 	// Check authentication
 	useEffect(() => {
@@ -72,6 +80,11 @@ const Chat = () => {
 		setNewMessage("");
 		setIsLoading(true);
 
+		// Focus the textarea after sending
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+		}
+
 		try {
 			// Send to API
 			const response = await postChatRequest(newMessage);
@@ -97,17 +110,35 @@ const Chat = () => {
 		}
 	};
 
+	const handleBackToHome = () => {
+		navigate("/");
+	};
+
 	if (isLoadingChats) {
 		return (
 			<div className={styles.chat_container}>
 				<div className={styles.chat_header}>
-					<h2>CChat with built-in company knowledge</h2>
+					<motion.button
+						className={styles.back_btn}
+						onClick={handleBackToHome}
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+					>
+						← Back to Home
+					</motion.button>
+					<h2 className={styles.chat_title}>
+						<span className={styles.title_icon}>💬</span>
+						Chat with built-in company knowledge
+					</h2>
 				</div>
 				<div className={styles.chat_messages}>
-					<div className={styles.loading_dots}>
-						<span></span>
-						<span></span>
-						<span></span>
+					<div className={styles.loading_container}>
+						<div className={styles.loading_dots}>
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+						<p className={styles.loading_text}>Loading your conversations...</p>
 					</div>
 				</div>
 			</div>
@@ -117,10 +148,28 @@ const Chat = () => {
 	return (
 		<div className={styles.chat_container}>
 			<div className={styles.chat_header}>
-				<h2>Chat with built-in company knowledge</h2>
+				<motion.button
+					className={styles.back_btn}
+					onClick={handleBackToHome}
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+				>
+					← Back to Home
+				</motion.button>
+				<h2 className={styles.chat_title}>
+					💬 Chat with built-in company knowledge
+				</h2>
 			</div>
 
 			<div className={styles.chat_messages}>
+				{messages.length === 0 && !isLoading && (
+					<div className={styles.empty_state}>
+						<div className={styles.empty_icon}>🤖</div>
+						<h3>Welcome to your AI Assistant!</h3>
+						<p>Start a conversation by typing a message below.</p>
+					</div>
+				)}
+
 				{messages.map((message, index) => (
 					<div
 						key={message._id || index}
@@ -162,22 +211,31 @@ const Chat = () => {
 			<div className={styles.chat_input_container}>
 				<div className={styles.input_wrapper}>
 					<textarea
+						ref={textareaRef}
 						value={newMessage}
 						onChange={(e) => setNewMessage(e.target.value)}
 						onKeyPress={handleKeyPress}
-						placeholder="Type your message here..."
+						placeholder="Type your message here... (Press Enter to send)"
 						className={styles.chat_input}
 						disabled={isLoading}
+						rows={1}
 					/>
 					<motion.button
-						className={styles.send_btn}
+						className={`${styles.send_btn} ${newMessage.trim() ? styles.send_btn_active : ''}`}
 						onClick={handleSendMessage}
 						disabled={isLoading || !newMessage.trim()}
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 					>
-						📤
+						{isLoading ? (
+							<span className={styles.sending_icon}>⏳</span>
+						) : (
+							<span className={styles.send_icon}>📤</span>
+						)}
 					</motion.button>
+				</div>
+				<div className={styles.input_helper}>
+					<span className={styles.helper_text}>Press Enter to send • Shift + Enter for new line</span>
 				</div>
 			</div>
 		</div>

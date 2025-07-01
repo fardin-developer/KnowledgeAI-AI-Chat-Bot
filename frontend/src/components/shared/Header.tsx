@@ -46,12 +46,7 @@ const Header = () => {
 						<span>KnowledgeAI</span>
 					</div>
 					<ul className="nav-links">
-						<li>
-							<a className="nav-link" onClick={() => smoothScrollTo("features")}>Features</a>
-						</li>
-						<li>
-							<a className="nav-link" onClick={handleUploadRedirect}>Upload Knowledge</a>
-						</li>
+						{/* we can add links here in future */}
 					</ul>
 					{auth?.isLoggedIn ? (
 						<button className="login-btn" onClick={handleLogout}>
