@@ -16,16 +16,6 @@ const Header = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
-	const smoothScrollTo = (id: string) => {
-		const el = document.getElementById(id);
-		if (el) {
-			el.scrollIntoView({ behavior: "smooth" });
-		}
-	};
-
-	const handleUploadRedirect = () => {
-		window.location.href = "/upload-knowledge";
-	};
 
 	const handleLoginRedirect = () => {
 		window.location.href = "/login";
@@ -54,7 +44,7 @@ const Header = () => {
 						</button>
 					) : (
 						<button className="login-btn" onClick={handleLoginRedirect}>
-							Loginnn
+							Login
 						</button>
 					)}
 				</nav>
